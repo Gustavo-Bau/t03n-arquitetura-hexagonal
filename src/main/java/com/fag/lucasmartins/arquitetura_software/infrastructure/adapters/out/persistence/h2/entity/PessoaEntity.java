@@ -9,6 +9,7 @@ import java.util.List;
 public class PessoaEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String nomeCompleto;
