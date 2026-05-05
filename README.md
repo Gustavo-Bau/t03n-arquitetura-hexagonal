@@ -210,9 +210,30 @@ Pré-requisitos:
 
 Passos:
 
+> **Importante:** o `pom.xml` fica dentro da pasta `t03n-arquitetura-hexagonal-master`.  
+> Se você executar Maven na raiz do repositório (`TrabalhoTer-a`), aparecerá o erro: *"there is no POM in this directory"*.
+
+```bash
+# Opção 1 (entrando na pasta do projeto)
+cd t03n-arquitetura-hexagonal-master
+./mvnw spring-boot:run
+
+# Windows (PowerShell/CMD)
+cd t03n-arquitetura-hexagonal-master
+.\mvnw.cmd spring-boot:run
+
+# Opção 2 (sem trocar de pasta)
+mvn -f t03n-arquitetura-hexagonal-master/pom.xml spring-boot:run
 ```
-# Windows (PowerShell)
-./mvnw.cmd clean spring-boot:run
+
+Atalhos na raiz do repositório:
+
+```bash
+# Linux/macOS
+./run-app.sh
+
+# Windows
+.\run-app.cmd
 ```
 
 Configurações:
@@ -238,3 +259,208 @@ A API atual de Produto (exemplo) segue o mesmo padrão e pode servir de referên
 ---
 
 Bons estudos e mãos à obra! O importante é proteger o Coração do Sistema e deixar que os detalhes técnicos orbitem ao redor, como verdadeiros adaptadores.
+
+## Sprint Atual — Consumo assíncrono de Pedido via SQS (SNS -> SQS FIFO)
+
+Foi adicionado um **adapter de entrada de mensageria** para criação de pedidos: `SqsPedidoAdapter`.
+
+### Fluxo implementado
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+1. O `SqsPedidoAdapter` escuta a fila configurada em `aws.sqs.queue.pedidos`.
+=======
+1. O `SqsPedidoAdapter` escuta a fila configurada em `queue.order-events`.
+>>>>>>> theirs
+=======
+1. O `SqsPedidoAdapter` escuta a fila configurada em `queue.order-events`.
+>>>>>>> theirs
+=======
+1. O `SqsPedidoAdapter` escuta a fila configurada em `queue.order-events`.
+>>>>>>> theirs
+=======
+1. O `SqsPedidoAdapter` escuta a fila configurada em `queue.order-events`.
+>>>>>>> theirs
+=======
+1. O `SqsPedidoAdapter` escuta a fila configurada em `queue.order-events`.
+>>>>>>> theirs
+2. O JSON do evento é desserializado para `PedidoEventDTO`.
+3. O mapper `PedidoEventDTOMapper` traduz o contrato externo para o `PedidoBO` da aplicação:
+   - `zipCode` -> `cep`
+   - `customerId` -> `pessoa.id`
+   - `orderItems[].sku` -> `itens[].produto.id`
+   - `orderItems[].amount` -> `itens[].quantidade`
+4. O adapter chama `PedidoServicePort.criarPedido(...)` reutilizando o caso de uso já existente.
+
+### Variáveis de ambiente obrigatórias
+Para deixar o projeto pronto para rodar (faltando apenas suas chaves), configure na IDE/terminal:
+
+```bash
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=<SUA_ACCESS_KEY>
+AWS_SECRET_ACCESS_KEY=<SUA_SECRET_KEY>
+AWS_SQS_PEDIDOS_QUEUE=<T0XN_NOME_COMPLETO.fifo>
+<<<<<<< ours
+<<<<<<< ours
+=======
+APP_SQS_PEDIDO_ENABLED=true
+>>>>>>> theirs
+=======
+APP_SQS_PEDIDO_ENABLED=true
+>>>>>>> theirs
+=======
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+AWS_ACCESS_KEY_ID=<SUA_ACCESS_KEY>
+AWS_SECRET_ACCESS_KEY=<SUA_SECRET_KEY>
+QUEUE_ORDER_EVENTS=<T0XN_NOME_COMPLETO.fifo>
+APP_SQS_PEDIDO_ENABLED=true
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+```
+
+> Observação: a fila deve estar inscrita no tópico SNS do professor com **Raw Message Delivery** ativado.
+
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+=======
+> Por padrão, o consumer SQS inicia **desabilitado** (`APP_SQS_PEDIDO_ENABLED=false`) para a aplicação não cair ao subir sem AWS configurada.
+> Ao configurar suas keys e fila, ative com `APP_SQS_PEDIDO_ENABLED=true`.
+
+>>>>>>> theirs
+=======
+> Por padrão, o consumer SQS inicia **desabilitado** (`APP_SQS_PEDIDO_ENABLED=false`) para a aplicação não cair ao subir sem AWS configurada.
+> Ao configurar suas keys e fila, ative com `APP_SQS_PEDIDO_ENABLED=true`.
+
+>>>>>>> theirs
+=======
+> Por padrão, o consumer SQS inicia **desabilitado** (`APP_SQS_PEDIDO_ENABLED=false`) para a aplicação não cair ao subir sem AWS configurada.
+> Ao configurar suas keys e fila, ative com `APP_SQS_PEDIDO_ENABLED=true`.
+
+>>>>>>> theirs
+=======
+> Por padrão, o consumer SQS inicia **desabilitado** (`APP_SQS_PEDIDO_ENABLED=false`) para a aplicação não cair ao subir sem AWS configurada.
+> Ao configurar suas keys e fila, ative com `APP_SQS_PEDIDO_ENABLED=true`.
+
+>>>>>>> theirs
+=======
+> Por padrão, o consumer SQS inicia **desabilitado** (`APP_SQS_PEDIDO_ENABLED=false`) para a aplicação não cair ao subir sem AWS configurada.
+> Ao configurar suas keys e fila, ative com `APP_SQS_PEDIDO_ENABLED=true`.
+
+>>>>>>> theirs
+=======
+> Por padrão, o consumer SQS inicia **desabilitado** (`APP_SQS_PEDIDO_ENABLED=false`) para a aplicação não cair ao subir sem AWS configurada.
+> Ao configurar suas keys e fila, ative com `APP_SQS_PEDIDO_ENABLED=true`.
+
+>>>>>>> theirs
+=======
+> Por padrão, o consumer SQS inicia **desabilitado** (`APP_SQS_PEDIDO_ENABLED=false`) para a aplicação não cair ao subir sem AWS configurada.
+> Ao configurar suas keys e fila, ative com `APP_SQS_PEDIDO_ENABLED=true`.
+
+>>>>>>> theirs
+### Contrato do evento esperado
+```json
+{
+  "zipCode": "80010000",
+  "customerId": 1,
+  "orderItems": [
+    { "sku": 1, "amount": 5 },
+    { "sku": 2, "amount": 3 }
+  ],
+  "origin": "SQS_QUEUE",
+  "occurredAt": "2024-05-20T14:30:00Z"
+}
+```
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+=======
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+
+
+## Configurando variáveis na IDE
+
+### IntelliJ IDEA
+No `Run/Debug Configurations`, preencha **Environment variables**:
+
+```
+AWS_ACCESS_KEY_ID=sua_access_key;AWS_SECRET_ACCESS_KEY=sua_secret_key;QUEUE_ORDER_EVENTS=T0XN_NOME_COMPLETO.fifo;APP_SQS_PEDIDO_ENABLED=true
+```
+
+### VS Code (`launch.json`)
+Adicione o bloco `env` na configuração Java:
+
+```json
+"env": {
+  "AWS_ACCESS_KEY_ID": "COLE_SUA_ACCESS_KEY_AQUI",
+  "AWS_SECRET_ACCESS_KEY": "COLE_SUA_SECRET_KEY_AQUI",
+  "QUEUE_ORDER_EVENTS": "T0XN_NOME_COMPLETO.fifo",
+  "APP_SQS_PEDIDO_ENABLED": "true"
+}
+```
+
+> Segurança: nunca commitar Access Key ou Secret Key em arquivo versionado.
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+
+
+### Troubleshooting (erro `Application finished with exit code: 1`)
+Se der erro no `spring-boot:run`, valide esta ordem:
+
+1. Para subir **sem AWS/SQS**, mantenha:
+   - `APP_SQS_PEDIDO_ENABLED=false`
+2. Para subir **com SQS**, configure também:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+   - `QUEUE_ORDER_EVENTS` (ex.: `T0XN_SEU_NOME_PEDIDOS.fifo`)
+
+> Dica: `queue.order-events` já possui valor padrão de fallback no `application.properties`, mas em ambiente real use sempre sua fila individual.
+>>>>>>> theirs
